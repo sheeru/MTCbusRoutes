@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.LinkedList;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -28,8 +29,13 @@ public class MainActivity extends Activity {
 	TextView test;
 	String BusNumbers;
 	String StagesList;
+	LinkedList<String> stages_row = new LinkedList<String>();
+	
+	String[] StagesList_Array;
+	String[] BusNumber_Array;
+	
 
-    
+//	LinkedList<LinkedList<String>> stages_row = new LinkedList<LinkedList<String>>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +48,17 @@ public class MainActivity extends Activity {
 		
 	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+
         if (networkInfo != null && networkInfo.isConnected()) {
             new DownloadWebpageTask().execute(stringUrl);
+
         } else {
             test.setText("No network connection available.");
         }
 		
-		
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, StageList);
+	    
+	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+	            android.R.layout.simple_list_item_1, StageList);
 		
 		
 		AutoCompleteTextView source = (AutoCompleteTextView)
@@ -138,15 +146,17 @@ public class MainActivity extends Activity {
 			
 			String line;
 			String[] BusNoStation;
-			
+
 			while ((line = r.readLine()) != null) {
 				BusNoStation=line.split(": ", 2);
 				BusNoList.append(BusNoStation[0]).append(",");
 			    Stages.append(BusNoStation[1]).append(",");
+			    stages_row.add(BusNoStation[1].toString());
 			}
 			BusNumbers = BusNoList.toString().replace("- ", "");
-			StagesList = Stages.toString();		    
-		    
+			StagesList = Stages.toString();
+			String debug_test = stages_row.get(0);
+			int length = stages_row.size();
 		}
    }
 	
