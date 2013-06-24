@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
 
 		if(DisplayDirectRoutes(source_get,destination_get) == 0)
 		{
-			test.append("Since No direct routes found, trying to get indirect routes");
+			test.append("Since No direct routes found, trying to get indirect routes \n \n");
 			
 			for(String element:stages_row)
 			{
@@ -125,19 +125,21 @@ public class MainActivity extends Activity {
 						}
 						else if((source_index_next == list.size() - 1) && FinTravelFwd == 0)
 						{
-							test.append("Take " +GetBusNumber_Array()[stages_row.indexOf(element)] +
-									"from " + source_get + " to reach " + destination_get + "\n");
-							
-							DisplayDirectRoutes(list.get((source_index_next)).toString(),
-									destination_get);	
+						
+							if(DisplayDirectRoutes(list.get((source_index_next)).toString(),
+									destination_get) == 1)
+							{
+								test.append("Take " + GetBusNumber_Array()
+										[stages_row.indexOf(element)] +
+										"from " + source_get + " to reach " +
+										list.get((source_index_next)).toString() + "\n \n");
+							}
 							FinTravelFwd = 1;
 							
 						}
 						else
 						{
-							test.append("Take " +GetBusNumber_Array()[stages_row.indexOf(element)] +
-									"from " + source_get + " to reach " + destination_get + "\n");
-							
+														
 							if(DisplayDirectRoutes(list.get((source_index_next)).toString(),
 									destination_get) == 0)
 							{
@@ -145,7 +147,13 @@ public class MainActivity extends Activity {
 							}
 							else
 							{
+								test.append("Take " +GetBusNumber_Array()
+										[stages_row.indexOf(element)] +
+										"from " + source_get + " to reach " + 
+										list.get((source_index_next)).toString() + "\n \n");
+
 								FinTravelFwd = 1;
+								FinTravelBwd = 1;
 							}
 
 						}
@@ -157,13 +165,22 @@ public class MainActivity extends Activity {
 						
 						else if((source_index_prev == 0) && FinTravelBwd == 0)
 						{
-							DisplayDirectRoutes(list.get((source_index_prev)).toString(),
-									destination_get);	
+
+							if(DisplayDirectRoutes(list.get((source_index_prev)).toString(),
+									destination_get) == 1)
+							{
+								test.append("Take " +GetBusNumber_Array()
+										[stages_row.indexOf(element)] +
+										"from " + source_get + " to reach " + 
+										list.get((source_index_prev)).toString() + "\n \n");
+							}
 							FinTravelBwd = 1;
 							
 						}
 						else
 						{
+
+
 							if(DisplayDirectRoutes(list.get((source_index_prev)).toString(),
 									destination_get) == 0)
 							{
@@ -171,7 +188,13 @@ public class MainActivity extends Activity {
 							}
 							else
 							{
+								test.append("Take " +GetBusNumber_Array()
+										[stages_row.indexOf(element)] +
+										"from " + source_get + " to reach " + 
+										list.get((source_index_prev)).toString() + "\n \n");
+								
 								FinTravelBwd = 1;
+								FinTravelFwd = 1;
 							}
 
 						}
