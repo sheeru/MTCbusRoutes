@@ -16,8 +16,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -26,13 +28,14 @@ public class MainActivity extends Activity {
 	         "A", "AA", "AAA", "AB", "ABCD","AAAA","AAAAAAA"
 	     };
 	
+	AutoCompleteTextView source;
+	AutoCompleteTextView destination;
 	TextView test;
+	Button Search;
+	
 	String BusNumbers;
 	String StagesList;
 	LinkedList<String> stages_row = new LinkedList<String>();
-	
-	String[] StagesList_Array;
-	String[] BusNumber_Array;
 	
 
 //	LinkedList<LinkedList<String>> stages_row = new LinkedList<LinkedList<String>>();
@@ -61,12 +64,18 @@ public class MainActivity extends Activity {
 	            android.R.layout.simple_list_item_1, StageList);
 		
 		
-		AutoCompleteTextView source = (AutoCompleteTextView)
+		source = (AutoCompleteTextView)
                 findViewById(R.id.Source);
 		source.setThreshold(1);
 		source.setAdapter(adapter);
 		
+		destination = (AutoCompleteTextView) 
+				findViewById(R.id.Destination);
+		destination.setThreshold(1);
+		destination.setAdapter(adapter);
+		
         test = (TextView) findViewById(R.id.test);
+        Search = (Button) findViewById(R.id.Search);              
 		
 	}
 	
@@ -79,6 +88,39 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	
+	public void StartSearch(View view)
+	{
+		String source_get = source.getText().toString();
+		String destination_get = destination.getText().toString();
+		
+		
+		int DirectRouteFound = 0;
+		
+		test.setText("");
+		
+		for(String element:stages_row)
+		{
+			if(element.contains(source_get) &&
+					element.contains(destination_get))
+			{
+				test.append(GetBusNumber_Array()[stages_row.indexOf(element)] + "\n");
+				DirectRouteFound = 1;
+			}
+		}
+		
+//		test.setText(source.getText());
+	}
+	
+	public String[] GetBusNumber_Array()
+	{
+		return BusNumbers.split(",");
+	}
+	
+	public String[] GetStagesList_Array()
+	{
+		return StagesList.split(",");
+	}
 	
     // Uses AsyncTask to create a task away from the main UI thread. This task takes a 
     // URL string and uses it to create an HttpUrlConnection. Once the connection
