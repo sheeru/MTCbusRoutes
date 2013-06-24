@@ -7,7 +7,10 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -94,22 +97,90 @@ public class MainActivity extends Activity {
 		String source_get = source.getText().toString();
 		String destination_get = destination.getText().toString();
 		
-		
-		int DirectRouteFound = 0;
-		
 		test.setText("");
 		
-		for(String element:stages_row)
+
+		if(DisplayDirectRoutes(source_get,destination_get) == 0)
 		{
-			if(element.contains(source_get) &&
-					element.contains(destination_get))
+			test.append("Since No direct routes found, trying to get indirect routes");
+			
+			for(String element:stages_row)
 			{
-				test.append(GetBusNumber_Array()[stages_row.indexOf(element)] + "\n");
-				DirectRouteFound = 1;
+				String[] stages_row_array = element.split(",");
+				List<String> list =  Arrays.asList(stages_row_array);
+				String source_stage = source.getText().toString();
+				
+				if(list.contains(source_stage))
+				{
+					int source_index_next = list.indexOf(source_stage) + 1;
+					int source_index_prev = list.indexOf(source_stage) - 1;
+					int FinTravelFwd = 0;
+					int FinTravelBwd = 0;
+					
+					while(FinTravelFwd == 0 || FinTravelBwd == 0)
+					{
+						if(source_index_next  == list.size())
+						{
+							FinTravelFwd = 1;
+						}
+						else if((source_index_next == list.size() - 1) && FinTravelFwd == 0)
+						{
+							test.append("Take " +GetBusNumber_Array()[stages_row.indexOf(element)] +
+									"from " + source_get + " to reach " + destination_get + "\n");
+							
+							DisplayDirectRoutes(list.get((source_index_next)).toString(),
+									destination_get);	
+							FinTravelFwd = 1;
+							
+						}
+						else
+						{
+							test.append("Take " +GetBusNumber_Array()[stages_row.indexOf(element)] +
+									"from " + source_get + " to reach " + destination_get + "\n");
+							
+							if(DisplayDirectRoutes(list.get((source_index_next)).toString(),
+									destination_get) == 0)
+							{
+								source_index_next++;
+							}
+							else
+							{
+								FinTravelFwd = 1;
+							}
+
+						}
+						
+						if(source_index_prev  == -1)
+						{
+							FinTravelBwd = 1;
+						}
+						
+						else if((source_index_prev == 0) && FinTravelBwd == 0)
+						{
+							DisplayDirectRoutes(list.get((source_index_prev)).toString(),
+									destination_get);	
+							FinTravelBwd = 1;
+							
+						}
+						else
+						{
+							if(DisplayDirectRoutes(list.get((source_index_prev)).toString(),
+									destination_get) == 0)
+							{
+								source_index_prev--;
+							}
+							else
+							{
+								FinTravelBwd = 1;
+							}
+
+						}
+
+					}
+
+				}
 			}
 		}
-		
-//		test.setText(source.getText());
 	}
 	
 	public String[] GetBusNumber_Array()
@@ -121,6 +192,24 @@ public class MainActivity extends Activity {
 	{
 		return StagesList.split(",");
 	}
+
+	public int DisplayDirectRoutes(String source_get,String destination_get)
+	{
+		int DirectRoutesFound = 0;
+
+		for(String element:stages_row)
+		{
+			if(element.contains(source_get) &&
+					element.contains(destination_get))
+			{
+				test.append("Take " +GetBusNumber_Array()[stages_row.indexOf(element)] +
+								"from " + source_get + "to reach " + destination_get + "\n");
+				DirectRoutesFound = 1;
+			}
+		}
+		return DirectRoutesFound;
+	}
+	
 	
     // Uses AsyncTask to create a task away from the main UI thread. This task takes a 
     // URL string and uses it to create an HttpUrlConnection. Once the connection
@@ -145,7 +234,8 @@ public class MainActivity extends Activity {
        // onPostExecute displays the results of the AsyncTask.
        @Override
        protected void onPostExecute(String result) {   
-    	   test.setText(BusNumbers);
+    	   test.setText("");
+    	   test.append("Please start searching your routes" + "\n");
       }
       
 	// Given a URL, establishes an HttpUrlConnection and retrieves
