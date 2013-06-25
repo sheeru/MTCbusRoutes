@@ -1,0 +1,2 @@
+i)  Populate dynamically in AutoCompleteTextView box from the bus route text box
+ii) Provide abstract class mechanism to get the data from text file to store in an array for modularity
