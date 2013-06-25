@@ -62,20 +62,7 @@ public class MainActivity extends Activity {
             test.setText("No network connection available.");
         }
 		
-	    
-	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-	            android.R.layout.simple_list_item_1, StageList);
 		
-		
-		source = (AutoCompleteTextView)
-                findViewById(R.id.Source);
-		source.setThreshold(1);
-		source.setAdapter(adapter);
-		
-		destination = (AutoCompleteTextView) 
-				findViewById(R.id.Destination);
-		destination.setThreshold(1);
-		destination.setAdapter(adapter);
 		
         test = (TextView) findViewById(R.id.test);
         Search = (Button) findViewById(R.id.Search);              
@@ -116,6 +103,7 @@ public class MainActivity extends Activity {
 					int source_index_prev = list.indexOf(source_stage) - 1;
 					int FinTravelFwd = 0;
 					int FinTravelBwd = 0;
+
 					
 					while(FinTravelFwd == 0 || FinTravelBwd == 0)
 					{
@@ -154,6 +142,7 @@ public class MainActivity extends Activity {
 
 								FinTravelFwd = 1;
 								FinTravelBwd = 1;
+	
 							}
 
 						}
@@ -193,8 +182,9 @@ public class MainActivity extends Activity {
 										"from " + source_get + " to reach " + 
 										list.get((source_index_prev)).toString() + "\n \n");
 								
-								FinTravelBwd = 1;
+
 								FinTravelFwd = 1;
+								FinTravelBwd = 1;
 							}
 
 						}
@@ -257,9 +247,35 @@ public class MainActivity extends Activity {
        // onPostExecute displays the results of the AsyncTask.
        @Override
        protected void onPostExecute(String result) {   
+    	   
+    	   List<String> list_source = Arrays.asList(GetStagesList_Array());
+    	   
+/*    	   for(String element:GetStagesList_Array())
+    	   {
+    		   list_source_new = list_source.toString().
+    		   replace(element, "").replace(",,",",").
+    		   concat(","+element);
+    		   list_source_size = list_source_new.length();
+    	   } */
+
+   	    	ArrayAdapter<String> adapter_source = new ArrayAdapter<String>(getBaseContext(),
+   	            android.R.layout.simple_list_item_1, GetStagesList_Array());
+   		
+	   		source = (AutoCompleteTextView)
+	                   findViewById(R.id.Source);
+	   		source.setThreshold(1);
+	   		source.setAdapter(adapter_source);
+	   		
+	   		destination = (AutoCompleteTextView)
+	                findViewById(R.id.Destination);
+			destination.setThreshold(1);
+			destination.setAdapter(adapter_source);
+
+    	   
     	   test.setText("");
     	   test.append("Please start searching your routes" + "\n");
       }
+       
       
 	// Given a URL, establishes an HttpUrlConnection and retrieves
 	// the web page content as a InputStream, which it returns as

@@ -29,7 +29,7 @@
         android:layout_below="@+id/textView1"
         android:layout_marginTop="34dp"
         android:ems="10"
-        android:text="AutoCompleteTextView" >
+        android:text="@string/source" >
 
         <requestFocus />
     </AutoCompleteTextView>
@@ -41,7 +41,7 @@
         android:layout_alignLeft="@+id/Source"
         android:layout_below="@+id/Source"
         android:ems="10"
-        android:text="AutoCompleteTextView" />
+        android:text="@string/destination" />
 
     <TextView
         android:id="@+id/test"

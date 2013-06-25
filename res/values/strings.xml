@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="startsearch">StartSearch</string>
     <string name="displayresults">DisplayResults</string>
+    <string name="source">Source</string>
+    <string name="destination">Destination</string>
 
 </resources>
