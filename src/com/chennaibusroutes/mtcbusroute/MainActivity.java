@@ -27,10 +27,6 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	String[] StageList = {
-	         "A", "AA", "AAA", "AB", "ABCD","AAAA","AAAAAAA"
-	     };
-	
 	AutoCompleteTextView source;
 	AutoCompleteTextView destination;
 	TextView test;
