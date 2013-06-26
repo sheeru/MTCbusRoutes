@@ -15,18 +15,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="@string/hello_world" />
-
     <AutoCompleteTextView
         android:id="@+id/Source"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
         android:layout_marginTop="34dp"
         android:ems="10"
         android:text="@string/source" >
@@ -50,7 +42,7 @@
         android:layout_alignLeft="@+id/Destination"
         android:layout_below="@+id/Destination"
         android:layout_marginTop="92dp"
-        android:text="@string/displayresults" />
+        android:text="@string/pleasewait" />
 
     <Button
         android:id="@+id/Search"

@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -245,17 +247,17 @@ public class MainActivity extends Activity {
        protected void onPostExecute(String result) {   
     	   
     	   List<String> list_source = Arrays.asList(GetStagesList_Array());
+    	   ArrayList<String> list_source_al = new ArrayList<String>(list_source);
     	   
-/*    	   for(String element:GetStagesList_Array())
-    	   {
-    		   list_source_new = list_source.toString().
-    		   replace(element, "").replace(",,",",").
-    		   concat(","+element);
-    		   list_source_size = list_source_new.length();
-    	   } */
+    	   HashSet<String> hs = new HashSet<String>();
+    	   hs.addAll(list_source_al);
+    	   list_source_al.clear();
+    	   list_source_al.addAll(hs);
+		   String UniqueSources = hs.toString();
+		   String[] sourceArr = UniqueSources.split(", ");
 
    	    	ArrayAdapter<String> adapter_source = new ArrayAdapter<String>(getBaseContext(),
-   	            android.R.layout.simple_list_item_1, GetStagesList_Array());
+   	            android.R.layout.simple_list_item_1, sourceArr);
    		
 	   		source = (AutoCompleteTextView)
 	                   findViewById(R.id.Source);
